@@ -1,0 +1,32 @@
+{
+    "segments": {
+        "right": [
+            {
+                "function": "powerline.segments.common.sys.uptime",
+                "priority": 50
+            },
+            {
+                "function": "powerline.segments.common.sys.system_load",
+                "priority": 50
+            },
+            {
+                "function": "powerline.segments.common.bat.battery",
+                "name": "battery",
+                "args": {
+                    "online": "\u26a1",
+                    "offline": " "
+                }
+            },
+            {
+                "function": "powerline.segments.common.time.date",
+                "name": "date",
+                "args": {
+                    "format": "%b %d"
+                }
+            },
+            {
+                "function": "powerline.segments.common.net.hostname"
+            }
+        ]
+    }
+}
