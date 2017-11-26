@@ -7,6 +7,21 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'dracula/vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'lervag/vimtex'
+Plug 'majutsushi/tagbar'
+Plug 'valloric/youcompleteme'
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+" Plug 'zchee/deoplete-jedi'
 call plug#end()
 " }}}
 " Colors {{{
@@ -18,12 +33,16 @@ set tabstop=4           " 4 space tab
 set expandtab           " use spaces for tabs
 set softtabstop=4       " 4 space tab
 set shiftwidth=4
-set textwidth=79
+set textwidth=80
 set modelines=1
 filetype indent on
 filetype plugin on
 "set autoindent
 set grepprg=grep\ -nH\ $*
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
 let g:tex_flavor = "latex"
 " }}}
 " xclip {{{
@@ -54,24 +73,26 @@ set foldlevelstart=99    " start with fold level of 1
 " }}}
 " Leader Shortcuts {{{
 let mapleader=","
-nnoremap <leader>m :silent make\|redraw!\|cw<CR>
-nnoremap <leader>q :close<CR>
-nnoremap <leader>w :NERDTree<CR>
-nnoremap <leader>u :GundoToggle<CR>
-nnoremap <leader>h :A<CR>
+nnoremap <leader>* :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <leader>1 :set number!<CR>
+nnoremap <leader><space> :noh<CR>
+nnoremap <leader>a :Ag 
+nnoremap <leader>b :bn<CR>
+nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
+nnoremap <leader>d :Make! 
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
-nnoremap <leader>l :call ToggleNumber()<CR>
-nnoremap <leader><space> :noh<CR>
-nnoremap <leader>s :mksession<CR>
-nnoremap <leader>a :Ag 
-nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
-nnoremap <leader>1 :set number!<CR>
-nnoremap <leader>d :Make! 
-nnoremap <leader>r :call RunTestFile()<CR>
 nnoremap <leader>g :call RunGoFile()<CR>
+nnoremap <leader>h :A<CR>
+nnoremap <leader>l :call ToggleNumber()<CR>
+nnoremap <leader>m :silent make\|redraw!\|cw<CR>
+nnoremap <leader>q :close<CR>
+nnoremap <leader>r :call RunTestFile()<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>w :NERDTree<CR>
 nnoremap <leader>x :call system('xclip', @0)<CR>
+vnoremap <leader>s :sort<CR>
 vnoremap <leader>y "+y
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
@@ -94,12 +115,38 @@ inoremap jk <esc>
 "set t_Co=256
 "set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim/
 " }}}
+" syntastic {{{
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" }}}
 " Airline {{{
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_detect_spell=1
+" }}}
+" Vimtex {{{
+let g:vimtex_fold_enabled = 1
+let g:vimtex_compiler_progname = 'nvr'
+" if !exists('g:deoplete#omni#input_patterns')
+"   let g:deoplete#omni#input_patterns = {}
+" endif
+" let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+" }}}
+" Deoplete {{{
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
 " }}}
 "" Tmux {{{
 if exists('$TMUX') " allows cursor change in tmux mode
@@ -133,5 +180,10 @@ function! ToggleNumber()
         set relativenumber
     endif
 endfunc
+" A super cool function just to format some shitty jsons
+function! FormatJSON()
+    %!python -m json.tool
+endfunc
+
 " }}}
 " vim:foldmethod=marker:foldlevel=0
