@@ -54,6 +54,7 @@ DEFAULT_USER="angel"
 plugins=(tmux vi-mode git svn)
 
 source $ZSH/oh-my-zsh.sh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 # User configuration
 
@@ -146,5 +147,25 @@ build_prompt() {
     prompt_svn
     prompt_end
 }
+cdUndoKey() {
+  popd
+  zle       reset-prompt
+  echo
+  ls
+  zle       reset-prompt
+}
+
+cdParentKey() {
+  pushd ..
+  zle      reset-prompt
+  echo
+  ls
+  zle       reset-prompt
+}
+
+zle -N                 cdParentKey
+zle -N                 cdUndoKey
+bindkey '^[[1;3A'      cdParentKey
+bindkey '^[[1;3D'      cdUndoKey
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
