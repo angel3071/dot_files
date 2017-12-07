@@ -7,8 +7,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'dracula/vim'
+Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
 Plug 'lervag/vimtex'
@@ -27,6 +30,7 @@ call plug#end()
 " Colors {{{
 colorscheme codedark
 hi Visual term=reverse cterm=reverse guibg=Grey
+let g:airline_theme = 'codedark'
 " }}}
 " Spaces & Tabs {{{
 set tabstop=4           " 4 space tab
@@ -35,8 +39,8 @@ set softtabstop=4       " 4 space tab
 set shiftwidth=4
 set textwidth=80
 set modelines=1
-filetype indent on
-filetype plugin on
+" filetype indent on
+" filetype plugin on
 "set autoindent
 set grepprg=grep\ -nH\ $*
 if executable('ag')
@@ -57,6 +61,10 @@ set cursorline          " highlight current line
 "set wildmenu
 set lazyredraw
 set showmatch           " higlight matching parenthesis
+" }}}
+" Git commnets {{{
+autocmd FileType gitcommit setlocal spell spelllang=es_mx
+autocmd FileType gitcommit set spell
 " }}}
 " Searching {{{
 set ignorecase          " ignore case when searching
@@ -122,7 +130,7 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 " }}}
 " Airline {{{
