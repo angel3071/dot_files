@@ -17,6 +17,7 @@ Plug 'scrooloose/syntastic'
 Plug 'lervag/vimtex'
 Plug 'majutsushi/tagbar'
 Plug 'valloric/youcompleteme'
+Plug 'sbdchd/neoformat'
 " if has('nvim')
 "   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " else
@@ -45,7 +46,9 @@ set modelines=1
 set grepprg=grep\ -nH\ $*
 if executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+  " set grepprg=ag\ --nogroup\ --nocolor
+  set grepprg=ag\ --vimgrep\ $* 
+  set grepformat=%f:%l:%c:%m
 endif
 let g:tex_flavor = "latex"
 " }}}
@@ -100,6 +103,7 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>w :NERDTree<CR>
 nnoremap <leader>x :call system('xclip', @0)<CR>
+map <leader>ss :setlocal spell!<cr>
 vnoremap <leader>s :sort<CR>
 vnoremap <leader>y "+y
 vmap v <Plug>(expand_region_expand)
