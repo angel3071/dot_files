@@ -16,16 +16,16 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
 Plug 'lervag/vimtex'
 Plug 'majutsushi/tagbar'
-Plug 'valloric/youcompleteme'
+Plug 'junegunn/goyo.vim'
+" Plug 'valloric/youcompleteme'
 Plug 'sbdchd/neoformat'
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-" Plug 'zchee/deoplete-jedi'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 call plug#end()
 " }}}
 " Colors {{{
@@ -159,6 +159,10 @@ let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
 " Deoplete {{{
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
+if !exists('g:deoplete#omni#input_patterns')
+    let g:deoplete#omni#input_patterns = {}
+endif 
+let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 " }}}
 "" Tmux {{{
 if exists('$TMUX') " allows cursor change in tmux mode
