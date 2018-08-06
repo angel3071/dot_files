@@ -2,7 +2,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/vim-easy-align'
+" Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tomasiser/vim-code-dark'
@@ -17,6 +17,7 @@ Plug 'scrooloose/syntastic'
 Plug 'lervag/vimtex'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/goyo.vim'
+Plug 'airblade/vim-gitgutter'
 " Plug 'valloric/youcompleteme'
 Plug 'sbdchd/neoformat'
 if has('nvim')
@@ -26,12 +27,17 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+Plug 'zchee/deoplete-jedi'
+Plug 'wokalski/autocomplete-flow'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 call plug#end()
 " }}}
 " Colors {{{
 colorscheme codedark
 hi Visual term=reverse cterm=reverse guibg=Grey
 let g:airline_theme = 'codedark'
+set colorcolumn=80
 " }}}
 " Spaces & Tabs {{{
 set tabstop=4           " 4 space tab
@@ -159,10 +165,31 @@ let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
 " Deoplete {{{
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
-if !exists('g:deoplete#omni#input_patterns')
-    let g:deoplete#omni#input_patterns = {}
-endif 
-let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+" if !exists('g:deoplete#omni#input_patterns')
+"     let g:deoplete#omni#input_patterns = {}
+" endif 
+" let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+" }}}
+" Neosnippet {{{
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+"" SuperTab like snippets behavior.
+"" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+""imap <expr><TAB>
+"" \ pumvisible() ? "\<C-n>" :
+"" \ neosnippet#expandable_or_jumpable() ?
+"" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+"" For conceal markers.
+"if has('conceal')
+"  set conceallevel=2 concealcursor=niv
+"endif
 " }}}
 "" Tmux {{{
 if exists('$TMUX') " allows cursor change in tmux mode
