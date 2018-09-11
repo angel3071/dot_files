@@ -48,7 +48,7 @@ set textwidth=80
 set modelines=1
 " filetype indent on
 " filetype plugin on
-"set autoindent
+set autoindent
 set grepprg=grep\ -nH\ $*
 if executable('ag')
   " Use ag over grep
@@ -67,6 +67,7 @@ map <S-F7> :r!xclip -o<CR>
 set number              " show line numbers
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
+set ruler
 "set wildmenu
 set lazyredraw
 set showmatch           " higlight matching parenthesis
@@ -77,8 +78,9 @@ autocmd FileType gitcommit set spell
 " }}}
 " Searching {{{
 set ignorecase          " ignore case when searching
-"set incsearch           " search as characters are entered
-"set hlsearch            " highlight all matches
+set incsearch           " search as characters are entered
+set hlsearch            " highlight all matches
+set smartcase
 " }}}
 " Folding {{{
 "=== folding ===
@@ -108,6 +110,7 @@ nnoremap <leader>r :call RunTestFile()<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>w :NERDTree<CR>
+nnoremap <leader>f :NERDTreeFind<CR>
 nnoremap <leader>x :call system('xclip', @0)<CR>
 map <leader>ss :setlocal spell!<cr>
 vnoremap <leader>s :sort<CR>
@@ -115,6 +118,12 @@ vnoremap <leader>y "+y
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 inoremap jk <esc>
+" }}}
+" NERDTree {{{
+let NERDTreeQuitOnOpen = 1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 " }}}
 " Powerline {{{
 "set encoding=utf-8
