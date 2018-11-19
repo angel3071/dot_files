@@ -7,7 +7,7 @@
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="spaceship"
 DEFAULT_USER="angel"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -55,6 +55,7 @@ plugins=(tmux vi-mode git svn extract)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+source /usr/bin/aws_zsh_completer.sh
 
 # User configuration
 
@@ -123,49 +124,49 @@ alias pbcopy="xclip -i -selection c"
 #)
 #source "/home/angel/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
 
-prompt_svn() {
-    local rev branch
-    if in_svn; then
-        rev=$(svn_get_rev_nr)
-        branch=$(svn_get_branch_name)
-        if [ `svn_dirty_choose_pwd 1 0` -eq 1 ]; then
-            prompt_segment yellow black
-            echo -n "$rev@$branch"
-            echo -n "±"
-        else
-            prompt_segment green black
-            echo -n "$rev@$branch"
-        fi
-    fi
-}
-build_prompt() {
-    RETVAL=$?
-    prompt_status
-    prompt_context
-    prompt_dir
-    prompt_git
-    prompt_svn
-    prompt_end
-}
-cdUndoKey() {
-  popd
-  zle       reset-prompt
-  echo
-  ls
-  zle       reset-prompt
-}
+# prompt_svn() {
+#     local rev branch
+#     if in_svn; then
+#         rev=$(svn_get_rev_nr)
+#         branch=$(svn_get_branch_name)
+#         if [ `svn_dirty_choose_pwd 1 0` -eq 1 ]; then
+#             prompt_segment yellow black
+#             echo -n "$rev@$branch"
+#             echo -n "±"
+#         else
+#             prompt_segment green black
+#             echo -n "$rev@$branch"
+#         fi
+#     fi
+# }
+# build_prompt() {
+#     RETVAL=$?
+#     prompt_status
+#     prompt_context
+#     prompt_dir
+#     prompt_git
+#     prompt_svn
+#     prompt_end
+# }
+# cdUndoKey() {
+#   popd
+#   zle       reset-prompt
+#   echo
+#   ls
+#   zle       reset-prompt
+# }
 
-cdParentKey() {
-  pushd ..
-  zle      reset-prompt
-  echo
-  ls
-  zle       reset-prompt
-}
+# cdParentKey() {
+#   pushd ..
+#   zle      reset-prompt
+#   echo
+#   ls
+#   zle       reset-prompt
+# }
 
-zle -N                 cdParentKey
-zle -N                 cdUndoKey
-bindkey '^[[1;3A'      cdParentKey
-bindkey '^[[1;3D'      cdUndoKey
+# zle -N                 cdParentKey
+# zle -N                 cdUndoKey
+# bindkey '^[[1;3A'      cdParentKey
+# bindkey '^[[1;3D'      cdUndoKey
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -1,36 +1,46 @@
 " Vim Plug {{{
 call plug#begin('~/.local/share/nvim/plugged')
+" Colors
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'junegunn/vim-easy-align'
+Plug 'dracula/vim'
+Plug 'tomasiser/vim-code-dark'
+Plug 'ryanoasis/vim-devicons'
+" Utitlities
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'tomasiser/vim-code-dark'
-Plug 'dracula/vim'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-Plug 'lervag/vimtex'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/goyo.vim'
-Plug 'airblade/vim-gitgutter'
-" Plug 'valloric/youcompleteme'
+" Plug 'scrooloose/syntastic'
+Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-Plug 'zchee/deoplete-jedi'
-Plug 'wokalski/autocomplete-flow'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-misc'
+" Plug 'ludovicchabant/vim-gutentags'
+" Latex
+Plug 'lervag/vimtex'
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+" Python
+Plug 'zchee/deoplete-jedi'
+" JavaScript
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'carlitux/deoplete-ternjs'
+" Plug 'moll/vim-node'
+" TypeScript
+" Plug 'HerringtonDarkholme/yats.vim'
+Plug 'Quramy/tsuquyomi'
+Plug 'mhartington/deoplete-typescript'
 call plug#end()
 " }}}
 " Colors {{{
@@ -56,7 +66,6 @@ if executable('ag')
   set grepprg=ag\ --vimgrep\ $* 
   set grepformat=%f:%l:%c:%m
 endif
-let g:tex_flavor = "latex"
 " }}}
 " xclip {{{
 smap <F7> :w !xclip<CR><CR>
@@ -95,7 +104,7 @@ let mapleader=","
 nnoremap <leader>* :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <leader>1 :set number!<CR>
 nnoremap <leader><space> :noh<CR>
-nnoremap <leader>a :Ag 
+nnoremap <leader>a :Ag<CR>
 nnoremap <leader>b :bn<CR>
 nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
 nnoremap <leader>d :Make! 
@@ -151,6 +160,12 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi']
+" }}}
+" neomake {{{
+let g:neomake_open_list = 2
+let g:neomake_javascript_enabled_makers = ['jscs']
 " }}}
 " Airline {{{
 let g:airline_powerline_fonts = 1
@@ -160,6 +175,7 @@ let g:airline_detect_paste=1
 let g:airline_detect_spell=1
 " }}}
 " Vimtex {{{
+let g:tex_flavor = "latex"
 let g:vimtex_fold_enabled = 1
 let g:vimtex_compiler_progname = 'nvr'
 " if !exists('g:deoplete#omni#input_patterns')
@@ -174,10 +190,51 @@ let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
 " Deoplete {{{
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_refresh_always = 1
+let g:deoplete#max_abbr_width = 0
+let g:deoplete#max_menu_width = 0
+let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
+call deoplete#custom#option('_', 'matchers', ['matcher_full_fuzzy'])
+
+let g:tern_request_timeout = 1
+let g:tern_request_timeout = 6000
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+let g:deoplete#sources#tss#javascript_support = 1
+let g:tsuquyomi_javascript_support = 1
+let g:tsuquyomi_auto_open = 1
+let g:tsuquyomi_disable_quickfix = 1
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = [
+  \ 'tern#Complete',
+  \ 'jspc#omni'
+\]
+" Old config
 " if !exists('g:deoplete#omni#input_patterns')
 "     let g:deoplete#omni#input_patterns = {}
 " endif 
 " let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+" let g:tsuquyomi_javascript_support = 1
+" " let g:deoplete#disable_auto_complete = 1
+" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" " omnifuncs
+" augroup omnifuncs
+"   autocmd!
+"   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"   autocmd FileType javascript setlocal omnifunc=tsuquyomi#complete "javascriptcomplete#CompleteJS
+"   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" augroup end
+" " tern
+" if exists('g:plugs["tern_for_vim"]')
+"   let g:tern_show_argument_hints = 'on_hold'
+"   let g:tern_show_signature_in_pum = 1
+"   autocmd FileType javascript setlocal omnifunc=tern#Complete
+" endif
 " }}}
 " Neosnippet {{{
 " Plugin key-mappings.
@@ -185,6 +242,7 @@ let g:deoplete#enable_at_startup = 1
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
+let g:neosnippet#enable_completed_snippet = 1
 
 "" SuperTab like snippets behavior.
 "" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
@@ -199,6 +257,9 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 "if has('conceal')
 "  set conceallevel=2 concealcursor=niv
 "endif
+" }}}
+" vim-notes {{{
+let g:notes_directories = ['~/Notes']
 " }}}
 "" Tmux {{{
 if exists('$TMUX') " allows cursor change in tmux mode
