@@ -34,19 +34,20 @@ Plug 'airblade/vim-gitgutter'
 " Python
 Plug 'zchee/deoplete-jedi'
 " JavaScript
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'carlitux/deoplete-ternjs'
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+" Plug 'carlitux/deoplete-ternjs'
 " Plug 'moll/vim-node'
 " TypeScript
-" Plug 'HerringtonDarkholme/yats.vim'
-Plug 'Quramy/tsuquyomi'
-Plug 'mhartington/deoplete-typescript'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+" Plug 'Quramy/tsuquyomi'
+" Plug 'mhartington/deoplete-typescript'
 call plug#end()
 " }}}
 " Colors {{{
-colorscheme codedark
+colorscheme dracula
 hi Visual term=reverse cterm=reverse guibg=Grey
-let g:airline_theme = 'codedark'
+let g:airline_theme = 'deus'
 set colorcolumn=80
 " }}}
 " Spaces & Tabs {{{
